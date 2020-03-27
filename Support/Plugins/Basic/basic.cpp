@@ -228,6 +228,7 @@ protected :
   OFX::DoubleParam  *bScale_;
   OFX::DoubleParam  *aScale_;
   OFX::BooleanParam *componentScalesEnabled_;
+  OFX::StringParam *thread_parm;
 
 public :
   /** @brief ctor */
@@ -241,6 +242,7 @@ public :
     , bScale_(0)
     , aScale_(0)
     , componentScalesEnabled_(0)
+    , thread_parm("none")
   {
     dstClip_ = fetchClip(kOfxImageEffectOutputClipName);
     srcClip_ = fetchClip(kOfxImageEffectSimpleSourceClipName);
@@ -252,7 +254,7 @@ public :
     bScale_  = fetchDoubleParam("scaleB");
     aScale_  = fetchDoubleParam("scaleA");
     componentScalesEnabled_ = fetchBooleanParam("scaleComponents");
-
+    thread_parm = fetchStringParam("thread");
     // set the enabledness of our RGBA sliders
     setEnabledness();
   }
@@ -744,6 +746,16 @@ void BasicExamplePluginFactory::describeInContext(OFX::ImageEffectDescriptor& de
 
   param = defineScaleParam(desc, "scaleA", "alpha", "Scales the alpha component of the image", componentScalesGroup);
   page->addChild(*param);
+
+  StringParamDescriptor* paramS = desc.defineStringParam("thread");
+  paramS->setLabel("threads");
+  paramS->setHint("threads");
+  paramS->setDefault(std::to_string(OFX::MultiThread::getNumCPUs()).c_str());
+
+  paramS->setStringType(eStringTypeSingleLine);
+  paramS->setEnabled(false);
+  paramS->setParent(*evaluateGroup);
+
 }
 
 ImageEffect *BasicExamplePluginFactory::createInstance(OfxImageEffectHandle handle, ContextEnum /*context*/)
