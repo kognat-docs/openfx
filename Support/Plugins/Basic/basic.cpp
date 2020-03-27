@@ -242,7 +242,7 @@ public :
     , bScale_(0)
     , aScale_(0)
     , componentScalesEnabled_(0)
-    , thread_parm("none")
+    , thread_parm()
   {
     dstClip_ = fetchClip(kOfxImageEffectOutputClipName);
     srcClip_ = fetchClip(kOfxImageEffectSimpleSourceClipName);
@@ -754,7 +754,7 @@ void BasicExamplePluginFactory::describeInContext(OFX::ImageEffectDescriptor& de
 
   paramS->setStringType(eStringTypeSingleLine);
   paramS->setEnabled(false);
-  paramS->setParent(*evaluateGroup);
+  paramS->setParent(*componentScalesGroup);
 
 }
 

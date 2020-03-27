@@ -34,7 +34,7 @@ CXX_OSFLAGS =
 RANLIB = echo
 
 ifeq ($(OS),Darwin) 
-  CXX_OSFLAGS = -arch ppc -arch i386 
+  CXX_OSFLAGS = -arch x86_64 -arch i386 
   RANLIB = ranlib
 endif
 
